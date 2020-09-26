@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/navigation_tips"
         android:name="com.example.inspira.ui.Tips.TipsFragment"
-        android:label="@string/title_tips"
+        android:label="Tips"
         tools:layout="@layout/fragment_tips" />
 
     <fragment
@@ -22,4 +22,10 @@
         android:name="com.example.inspira.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_perfil"
+        android:name="com.example.inspira.ui.perfil.TipsFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_perfil" />
 </navigation>
