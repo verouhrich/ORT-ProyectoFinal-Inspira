@@ -1,4 +1,4 @@
-package com.example.inspira
+package com.ort.inspira
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

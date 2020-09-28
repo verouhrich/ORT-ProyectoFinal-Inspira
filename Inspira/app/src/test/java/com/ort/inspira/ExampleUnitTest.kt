@@ -1,4 +1,4 @@
-package com.example.inspira
+package com.ort.inspira
 
 import org.junit.Test
 

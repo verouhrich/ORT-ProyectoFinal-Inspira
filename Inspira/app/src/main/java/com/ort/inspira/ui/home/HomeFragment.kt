@@ -1,4 +1,4 @@
-package com.example.inspira.ui.home
+package com.ort.inspira.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.inspira.R
+import com.ort.inspira.R
 
 class HomeFragment : Fragment() {
 

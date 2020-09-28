@@ -1,4 +1,4 @@
-package com.example.inspira.ui.Tips
+package com.ort.inspira.ui.perfil
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,22 +8,23 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.inspira.R
+import com.ort.inspira.R
+
 
 class TipsFragment : Fragment() {
 
-    private lateinit var tipsViewModel: TipsViewModel
+    private lateinit var perfilViewModel: PerfilViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        tipsViewModel =
-                ViewModelProviders.of(this).get(TipsViewModel::class.java)
+        perfilViewModel =
+            ViewModelProviders.of(this).get(PerfilViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_tips, container, false)
         val textView: TextView = root.findViewById(R.id.text_tips)
-        tipsViewModel.text.observe(viewLifecycleOwner, Observer {
+        perfilViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "561572993901",
+    "firebase_url": "https://inspira-290223.firebaseio.com",
+    "project_id": "inspira-290223",
+    "storage_bucket": "inspira-290223.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561572993901:android:989ff6baea48437fa39864",
+        "android_client_info": {
+          "package_name": "com.ort.inspira"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561572993901-kcm1vkb556ipnaeq8g3909561bcej0o6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNKHPlm4LtSmwXNSXqhY_84JY07tKgHnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561572993901-kcm1vkb556ipnaeq8g3909561bcej0o6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

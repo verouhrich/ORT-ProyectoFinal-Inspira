@@ -1,13 +1,13 @@
-package com.example.inspira.ui.perfil
+package com.ort.inspira.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class PerfilViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is the Perfil Fragment"
+        value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
 }
