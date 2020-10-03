@@ -52,7 +52,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.firebase:firebase-auth-ktx:19.4.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:21.6.0'
-
+    implementation 'com.google.firebase:firebase-messaging-ktx:20.3.0'
     // FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:6.3.0'
 

@@ -2,6 +2,7 @@ package com.ort.inspira
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -11,6 +12,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +30,12 @@ class MainActivity : AppCompatActivity() {
                         Log.d("usuario", user.uid)
                     }
                 }
+            }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("Device")
+            .addOnCompleteListener { task ->
+                Log.d(TAG, "fruta se hizo")
+                Toast.makeText(baseContext, "Fruta Toast", Toast.LENGTH_SHORT).show()
             }
 
         super.onCreate(savedInstanceState)
