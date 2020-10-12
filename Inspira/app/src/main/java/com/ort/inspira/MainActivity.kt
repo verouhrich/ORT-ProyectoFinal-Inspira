@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val TAG: String="Conectado1"
         val auth: FirebaseAuth = Firebase.auth
+        val db = FirebaseFirestore.getInstance()
 
         auth.signInWithEmailAndPassword("profesor@ort.com","profesor")
             .addOnCompleteListener(this) { task ->
