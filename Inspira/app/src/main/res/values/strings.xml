@@ -3,4 +3,6 @@
     <string name="title_home">Home</string>
     <string name="title_tips">Tips</string>
     <string name="title_notifications">Notifications</string>
+    <string name="loginName">Usuario</string>
+    <string name="login_iniciar_sesion">Iniciar sesion</string>
 </resources>
