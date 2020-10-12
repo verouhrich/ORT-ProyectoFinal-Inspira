@@ -17,13 +17,13 @@ android:layout_margin="10dp">
     android:visibility="gone"/>
 
 <EditText
-    android:id="@+id/loginUser"
+    android:id="@+id/loginEmail"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ems="10"
-    android:hint="Usuario"
+    android:hint="Email"
     android:inputType="textPersonName"
-    android:text="@string/loginName"
+    android:text="@string/login_email"
     android:layout_margin="10dp"/>
 
 <EditText
