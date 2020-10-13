@@ -23,7 +23,6 @@ android:layout_margin="10dp">
     android:ems="10"
     android:hint="Email"
     android:inputType="textPersonName"
-    android:text="@string/login_email"
     android:layout_margin="10dp"/>
 
 <EditText
@@ -32,6 +31,7 @@ android:layout_margin="10dp">
     android:layout_height="wrap_content"
     android:ems="10"
     android:inputType="textPassword"
+    android:hint="Contraseña"
     android:layout_margin="10dp"/>
 
 <Button
