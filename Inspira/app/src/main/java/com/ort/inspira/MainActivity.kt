@@ -21,22 +21,12 @@ class MainActivity : AppCompatActivity() {
         val TAG: String="Conectado1"
         val auth: FirebaseAuth = Firebase.auth
 
-        auth.signInWithEmailAndPassword("profesor@ort.com","profesor")
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.d("task", "signInWithEmail:success")
-                    val user = auth.currentUser
-                    if (user != null) {
-                        Log.d("usuario", user.uid)
-                    }
-                }
-            }
-
-        FirebaseMessaging.getInstance().subscribeToTopic("Device")
+        /*FirebaseMessaging.getInstance().subscribeToTopic("Device")
             .addOnCompleteListener { task ->
                 Log.d(TAG, "fruta se hizo")
                 Toast.makeText(baseContext, "Fruta Toast", Toast.LENGTH_SHORT).show()
             }
+        */
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
