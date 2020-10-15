@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val TAG: String="Conectado1"
         val auth: FirebaseAuth = Firebase.auth
+        val db = FirebaseFirestore.getInstance()
 
         /*FirebaseMessaging.getInstance().subscribeToTopic("Device")
             .addOnCompleteListener { task ->
