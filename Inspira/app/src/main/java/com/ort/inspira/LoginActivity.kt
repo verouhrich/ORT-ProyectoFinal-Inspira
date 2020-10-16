@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmail: EditText
@@ -18,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
     private lateinit var button: Button
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +32,13 @@ class LoginActivity : AppCompatActivity() {
 
         //database = FirebaseDatabase.getInstance()
         auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+
 
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 login()
+                getDataUser()
             }
         })
     }
@@ -61,5 +66,20 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
         }
+    }
+
+    private fun getDataUser() {
+        val uid:String = auth.currentUser?.uid.toString()
+        db.collection("Users").document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d("Topics", "User data: ${document.data}")
+                } else {
+                    Log.d("NoDocument", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("Error", "get failed with ", exception)
+            }
     }
 }
