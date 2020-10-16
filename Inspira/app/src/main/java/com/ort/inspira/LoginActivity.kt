@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmail: EditText
@@ -41,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         val email:String=loginEmail.text.toString()
         val password:String=loginPassword.text.toString()
+        val db = FirebaseFirestore.getInstance()
 
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
             progressBar.visibility = View.VISIBLE
@@ -52,6 +54,23 @@ class LoginActivity : AppCompatActivity() {
                         val userAuth = auth.currentUser
                         if (userAuth != null) {
                             Log.d("Usuario uid: ", userAuth.uid)
+                            val topic = db.document("/Users/"+userAuth.uid).get()
+                            val topics = db.collection("Users").document(userAuth.uid)
+                            topics.get()
+                                .addOnSuccessListener { document ->
+                                    if (document != null) {
+                                        Log.d("Topics", "User data: ${document.data}")
+                                    } else {
+                                        Log.d("NoDocument", "No such document")
+                                    }
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.d("Error", "get failed with ", exception)
+                                }
+
+                            //Log.d("User topics", topic.toString())
+
+
                         }
                         startActivity(Intent(this, MainActivity::class.java))
                     } else {
