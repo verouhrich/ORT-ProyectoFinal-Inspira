@@ -56,6 +56,7 @@ class NotificationService : FirebaseMessagingService() {
             .setContentText(body)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
         if (image != null){
             notificationBuilder.setStyle(NotificationCompat.BigPictureStyle().bigPicture(image))
         }
@@ -69,6 +70,6 @@ class NotificationService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0, notificationBuilder.build())
+        notificationManager.notify(100, notificationBuilder.build())
     }
 }
