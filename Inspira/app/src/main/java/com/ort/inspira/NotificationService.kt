@@ -24,15 +24,15 @@ class NotificationService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        val body = remoteMessage.notification?.body
-        Log.d("remoteMessage.body", "$body")
         val title = remoteMessage.notification?.title
         Log.d("remoteMessage.title", "$title")
+        val body = remoteMessage.notification?.body
+        Log.d("remoteMessage.body", "$body")
         val imageUrl = remoteMessage.notification?.imageUrl?.toString()
         Log.d("remoteMessage.imageUrl", "$imageUrl")
         val image = getBitmapFromURL(imageUrl)
         Log.d("remoteMessage.image", "$image")
-        triggerNotification(body, title, image)
+        triggerNotification(title, body, image)
     }
 
     private fun getBitmapFromURL(imageUrl: String?): Bitmap? {
@@ -55,7 +55,7 @@ class NotificationService : FirebaseMessagingService() {
             .setContentTitle(title)
             .setContentText(body)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         if (image != null){
             notificationBuilder.setStyle(NotificationCompat.BigPictureStyle().bigPicture(image))
         }
