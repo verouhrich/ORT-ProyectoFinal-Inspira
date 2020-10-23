@@ -2,6 +2,7 @@ package com.ort.inspira
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,22 +20,9 @@ import com.google.firebase.messaging.FirebaseMessaging
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val TAG: String="Conectado1"
-        val auth: FirebaseAuth = Firebase.auth
-        val db = FirebaseFirestore.getInstance()
-
-        /*FirebaseMessaging.getInstance().subscribeToTopic("Device")
-            .addOnCompleteListener { task ->
-                Log.d(TAG, "fruta se hizo")
-                Toast.makeText(baseContext, "Fruta Toast", Toast.LENGTH_SHORT).show()
-            }
-        */
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
-
-
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

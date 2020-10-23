@@ -1,6 +1,7 @@
 package com.ort.inspira
 
 import android.content.Intent
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -11,6 +12,12 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmail: EditText
@@ -18,6 +25,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
     private lateinit var button: Button
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var usersRef: CollectionReference
+    private lateinit var firebaseMessaging: FirebaseMessaging
+    private lateinit var firebaseInstaceId: FirebaseInstanceId
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,11 +36,12 @@ class LoginActivity : AppCompatActivity() {
         loginEmail = findViewById(R.id.loginEmail)
         loginPassword = findViewById(R.id.loginPassword)
         button = findViewById(R.id.loginButton)
-
         progressBar = findViewById(R.id.loginProgressBar)
-
-        //database = FirebaseDatabase.getInstance()
         auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+        usersRef = firestore.collection("Users")
+        firebaseMessaging = FirebaseMessaging.getInstance()
+        firebaseInstaceId = FirebaseInstanceId.getInstance()
 
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -41,7 +53,6 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         val email:String=loginEmail.text.toString()
         val password:String=loginPassword.text.toString()
-
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
             progressBar.visibility = View.VISIBLE
 
@@ -49,17 +60,65 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this){
                         task ->
                     if (task.isSuccessful){
-                        val userAuth = auth.currentUser
-                        if (userAuth != null) {
-                            Log.d("Usuario uid: ", userAuth.uid)
+                        try {
+                            val userAuth = auth.currentUser
+                            Log.d("Usuario uid: ", userAuth!!.uid)
+                            getDataUser(userAuth.uid)
+                            action()
+                        } catch (error: Exception) {
+                            progressBar.visibility = View.GONE
+                            Toast.makeText(this, "Ocurrio un error, intente mas tarde", Toast.LENGTH_LONG).show()
                         }
-                        startActivity(Intent(this, MainActivity::class.java))
                     } else {
+                        progressBar.visibility = View.GONE
+                        loginPassword.text.clear()
                         Toast.makeText(this, "Error en la autenticacion. Verifique que los datos ingresados sean correctos", Toast.LENGTH_LONG).show()
-                        startActivity(Intent(this, LoginActivity::class.java))
-                        progressBar.visibility=View.INVISIBLE
                     }
                 }
         }
+    }
+
+    private fun getDataUser(uid: String) {
+        if (uid.isNullOrEmpty()) return
+        val userRef = usersRef.document(uid)
+        userRef.get().addOnSuccessListener { document ->
+            if (document != null) {
+                val topics = document.get("topics") as ArrayList<String>
+                Log.d("data", "DocumentSnapshot data: $topics")
+                removeOldTopics()
+                subscribeToTopics(topics)
+            } else {
+                Log.d("no document", "No such document")
+            }
+        }
+    }
+
+    private fun removeOldTopics() {
+        try {
+            firebaseInstaceId.deleteInstanceId()
+        } catch (error: IOException){
+            Log.d("Maybe Reinstall?", "Reinstall app go")
+        }
+    }
+
+    private fun subscribeToTopics(topics: ArrayList<String>) {
+        topics.forEach {topic ->
+            if (topic is String) {
+                firebaseMessaging.subscribeToTopic(topic)
+                    .addOnCompleteListener  { task ->
+                        if (task.isSuccessful) {
+                            Log.d("Toast: $topic", "OK")
+                        } else {
+                            Log.d("Toast $topic", "FAIL")
+                        }
+                    }
+            }
+        }
+    }
+
+    private fun action(){
+        progressBar.visibility = View.GONE
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 }
