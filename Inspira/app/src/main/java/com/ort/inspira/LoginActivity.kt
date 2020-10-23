@@ -1,7 +1,6 @@
 package com.ort.inspira
 
 import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -11,12 +10,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.internal.ThreadSafeHeapNode
 import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
@@ -95,9 +95,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun removeOldTopics() {
         try {
-            firebaseInstaceId.deleteInstanceId()
+            Thread {
+                firebaseInstaceId.deleteInstanceId()
+            }.start()
+            Log.d("Lanzo exception?", "No")
         } catch (error: IOException){
-            Log.d("Maybe Reinstall?", "Reinstall app go")
+            Log.d("Lanzo exception?", "Si")
         }
     }
 
