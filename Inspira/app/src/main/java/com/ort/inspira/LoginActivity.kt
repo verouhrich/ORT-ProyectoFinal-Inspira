@@ -60,15 +60,19 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this){
                         task ->
                     if (task.isSuccessful){
-                        val userAuth = auth.currentUser
-                        if (userAuth != null) {
-                            Log.d("Usuario uid: ", userAuth.uid)
+                        try {
+                            val userAuth = auth.currentUser
+                            Log.d("Usuario uid: ", userAuth!!.uid)
                             getDataUser(userAuth.uid)
+                            action()
+                        } catch (error: Exception) {
+                            progressBar.visibility = View.GONE
+                            Toast.makeText(this, "Ocurrio un error, intente mas tarde", Toast.LENGTH_LONG).show()
                         }
                     } else {
-                        Toast.makeText(this, "Error en la autenticacion. Verifique que los datos ingresados sean correctos", Toast.LENGTH_LONG).show()
-                        loginPassword.text.clear()
                         progressBar.visibility = View.GONE
+                        loginPassword.text.clear()
+                        Toast.makeText(this, "Error en la autenticacion. Verifique que los datos ingresados sean correctos", Toast.LENGTH_LONG).show()
                     }
                 }
         }
@@ -81,21 +85,19 @@ class LoginActivity : AppCompatActivity() {
             if (document != null) {
                 val topics = document.get("topics") as ArrayList<String>
                 Log.d("data", "DocumentSnapshot data: $topics")
-                removeOldTopics(topics)
+                removeOldTopics()
+                subscribeToTopics(topics)
             } else {
                 Log.d("no document", "No such document")
             }
         }
     }
 
-    private fun removeOldTopics(topics: ArrayList<String>) {
+    private fun removeOldTopics() {
         try {
             firebaseInstaceId.deleteInstanceId()
         } catch (error: IOException){
             Log.d("Maybe Reinstall?", "Reinstall app go")
-        } finally {
-            Log.d("finally?", "finally.")
-            subscribeToTopics(topics)
         }
     }
 
@@ -112,13 +114,11 @@ class LoginActivity : AppCompatActivity() {
                     }
             }
         }
-        action(topics)
     }
 
-    private fun action(topics: ArrayList<String>){
+    private fun action(){
         progressBar.visibility = View.GONE
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("topic", topics[0])
         startActivity(intent)
     }
 }
