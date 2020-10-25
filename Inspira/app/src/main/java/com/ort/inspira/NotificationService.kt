@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
@@ -18,6 +19,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.logging.Logger
+import kotlin.random.Random
 
 
 class NotificationService : FirebaseMessagingService() {
@@ -32,7 +34,9 @@ class NotificationService : FirebaseMessagingService() {
         Log.d("remoteMessage.imageUrl", "$imageUrl")
         val image = getBitmapFromURL(imageUrl)
         Log.d("remoteMessage.image", "$image")
-        triggerNotification(title, body, image)
+        val color = remoteMessage.notification?.color
+        Log.d("remoteMessage.color", "$color")
+        triggerNotification(title, body, image, color)
     }
 
     private fun getBitmapFromURL(imageUrl: String?): Bitmap? {
@@ -49,7 +53,7 @@ class NotificationService : FirebaseMessagingService() {
         }
     }
 
-    private fun triggerNotification(title: String?, body: String?, image: Bitmap?) {
+    private fun triggerNotification(title: String?, body: String?, image: Bitmap?, color: String?) {
         val channelId = getString(R.string.default_notification_channel_id)
         val notificationBuilder : NotificationCompat.Builder = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
@@ -57,6 +61,7 @@ class NotificationService : FirebaseMessagingService() {
             .setSmallIcon(R.mipmap.ic_launcher)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setColor(Color.parseColor(color))
         if (image != null){
             notificationBuilder.setStyle(NotificationCompat.BigPictureStyle().bigPicture(image))
         }
@@ -70,6 +75,6 @@ class NotificationService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(100, notificationBuilder.build())
+        notificationManager.notify(System.currentTimeMillis().toInt(), notificationBuilder.build())
     }
 }
