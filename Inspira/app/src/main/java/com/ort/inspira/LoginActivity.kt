@@ -29,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var usersRef: CollectionReference
     private lateinit var firebaseMessaging: FirebaseMessaging
     private lateinit var firebaseInstaceId: FirebaseInstanceId
+    private lateinit var notificationHistory: NotificationsHistory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
         usersRef = firestore.collection("Users")
         firebaseMessaging = FirebaseMessaging.getInstance()
         firebaseInstaceId = FirebaseInstanceId.getInstance()
+        notificationHistory = NotificationsHistory()
 
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -111,6 +113,8 @@ class LoginActivity : AppCompatActivity() {
                     .addOnCompleteListener  { task ->
                         if (task.isSuccessful) {
                             Log.d("Toast: $topic", "OK")
+                            //notificationHistory.showNotifications(topic)
+
                         } else {
                             Log.d("Toast $topic", "FAIL")
                         }
