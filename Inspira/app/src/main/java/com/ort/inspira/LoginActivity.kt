@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginPassword: EditText
     private lateinit var progressBar: ProgressBar
     private lateinit var auth: FirebaseAuth
-    private lateinit var button: Button
+    private lateinit var loginButton: Button
     private lateinit var firestore: FirebaseFirestore
     private lateinit var usersRef: CollectionReference
     private lateinit var firebaseMessaging: FirebaseMessaging
@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         loginEmail = findViewById(R.id.loginEmail)
         loginPassword = findViewById(R.id.loginPassword)
-        button = findViewById(R.id.loginButton)
+        loginButton = findViewById(R.id.loginButton)
         progressBar = findViewById(R.id.loginProgressBar)
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
@@ -43,19 +43,34 @@ class LoginActivity : AppCompatActivity() {
         firebaseMessaging = FirebaseMessaging.getInstance()
         firebaseInstaceId = FirebaseInstanceId.getInstance()
 
-        button.setOnClickListener(object : View.OnClickListener {
+        loginButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 login()
             }
         })
     }
 
+    override fun onStart() {
+        super.onStart()
+        spinnerAndButton(spinner = true, button = false)
+        if(auth.currentUser != null) {
+            getDataUser(auth.currentUser!!.uid)
+            action()
+        }
+        spinnerAndButton(spinner = false, button = true)
+    }
+
+    private fun spinnerAndButton(spinner: Boolean, button: Boolean) {
+        if (spinner) progressBar.visibility = View.VISIBLE
+        else progressBar.visibility = View.GONE
+        this.loginButton.isEnabled = button
+    }
+
     private fun login() {
         val email:String=loginEmail.text.toString()
         val password:String=loginPassword.text.toString()
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
-            progressBar.visibility = View.VISIBLE
-
+            spinnerAndButton(spinner = true, button = false)
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this){
                         task ->
@@ -66,11 +81,11 @@ class LoginActivity : AppCompatActivity() {
                             getDataUser(userAuth.uid)
                             action()
                         } catch (error: Exception) {
-                            progressBar.visibility = View.GONE
+                            spinnerAndButton(spinner = false, button = true)
                             Toast.makeText(this, "Ocurrio un error, intente mas tarde", Toast.LENGTH_LONG).show()
                         }
                     } else {
-                        progressBar.visibility = View.GONE
+                        spinnerAndButton(spinner = false, button = true)
                         loginPassword.text.clear()
                         Toast.makeText(this, "Error en la autenticacion. Verifique que los datos ingresados sean correctos", Toast.LENGTH_LONG).show()
                     }
@@ -120,7 +135,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun action(){
-        progressBar.visibility = View.GONE
+        spinnerAndButton(spinner = false, button = false)
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
