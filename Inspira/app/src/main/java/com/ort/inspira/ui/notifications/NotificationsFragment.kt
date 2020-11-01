@@ -36,8 +36,8 @@ class NotificationsFragment : Fragment() {
 
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
-        val sharedPreferences = activity?.getPreferences(AppCompatActivity.MODE_PRIVATE)
-        val topic = sharedPreferences?.getString("topic", "Student")
+        val sharedPreferences = activity?.getSharedPreferences("settings", AppCompatActivity.MODE_PRIVATE)
+        val topic = sharedPreferences?.getString("topic", "")
         Log.d("sharedPreferences.topic", "$topic")
         var _layoutManager = LinearLayoutManager(activity)
         _layoutManager.orientation = LinearLayoutManager.VERTICAL

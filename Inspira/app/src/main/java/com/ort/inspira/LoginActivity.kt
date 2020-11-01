@@ -116,11 +116,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun saveTopic(topics: ArrayList<String>) {
-        val sharedPreferences = getPreferences(MODE_PRIVATE)
+        val sharedPreferences = applicationContext.getSharedPreferences("settings", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("topic", topics[0])
         Log.d("saveTopic.topic", topics[0]);
         editor.commit()
+
     }
 
     private fun removeOldTopics() {

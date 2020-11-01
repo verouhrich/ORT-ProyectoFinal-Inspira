@@ -23,7 +23,6 @@
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
             android:paddingRight="16dp"
-            android:scrollbars="vertical"
             tools:listitem="@layout/notification_item" />
     </ScrollView>
 
