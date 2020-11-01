@@ -1,7 +1,6 @@
 package com.ort.inspira
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -10,14 +9,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import com.google.android.gms.tasks.Task
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.internal.ThreadSafeHeapNode
 import java.io.IOException
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmail: EditText
@@ -72,8 +71,7 @@ class LoginActivity : AppCompatActivity() {
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
             spinnerAndButton(spinner = true, button = false)
             auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this){
-                        task ->
+                .addOnCompleteListener(this){ task ->
                     if (task.isSuccessful){
                         try {
                             val userAuth = auth.currentUser
@@ -82,12 +80,20 @@ class LoginActivity : AppCompatActivity() {
                             action()
                         } catch (error: Exception) {
                             spinnerAndButton(spinner = false, button = true)
-                            Toast.makeText(this, "Ocurrio un error, intente mas tarde", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this,
+                                "Ocurrio un error, intente mas tarde",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     } else {
                         spinnerAndButton(spinner = false, button = true)
                         loginPassword.text.clear()
-                        Toast.makeText(this, "Error en la autenticacion. Verifique que los datos ingresados sean correctos", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            "Error en la autenticacion. Verifique que los datos ingresados sean correctos",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
         }
@@ -102,10 +108,19 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("data", "DocumentSnapshot data: $topics")
                 removeOldTopics()
                 subscribeToTopics(topics)
+                saveTopic(topics)
             } else {
                 Log.d("no document", "No such document")
             }
         }
+    }
+
+    private fun saveTopic(topics: ArrayList<String>) {
+        val sharedPreferences = getPreferences(MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("topic", topics[0])
+        Log.d("saveTopic.topic", topics[0]);
+        editor.commit()
     }
 
     private fun removeOldTopics() {
@@ -120,7 +135,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun subscribeToTopics(topics: ArrayList<String>) {
-        topics.forEach {topic ->
+        topics.forEach { topic ->
             if (topic is String) {
                 firebaseMessaging.subscribeToTopic(topic)
                     .addOnCompleteListener  { task ->
