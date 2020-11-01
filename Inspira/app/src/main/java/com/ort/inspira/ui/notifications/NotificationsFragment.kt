@@ -8,7 +8,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.ort.inspira.NotifactionsAdapter
 import com.ort.inspira.R
+import com.ort.inspira.Supplier
+import kotlinx.android.synthetic.main.fragment_notifications.*
 
 class NotificationsFragment : Fragment() {
 
@@ -25,7 +29,17 @@ class NotificationsFragment : Fragment() {
         val textView: TextView = root.findViewById(R.id.text_notifications)
         notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
+
         })
+
+        setContentView(R.layout.fragment_notifications)
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView.layoutManager = layoutManager
+
+        val adapter = NotifactionsAdapter(this, Supplier.Notifications)
+        recyclerView.adapter = adapter
+
         return root
     }
 }
