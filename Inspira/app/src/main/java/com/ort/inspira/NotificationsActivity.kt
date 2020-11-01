@@ -13,9 +13,7 @@ class NotificationsActivity : AppCompatActivity() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = layoutManager
 
-        val adapter = NotifactionsAdapter(this, Supplier.Notifications)
+        val adapter = NotificationsAdapter(Supplier.Notifications)
         recyclerView.adapter = adapter
-
-
     }
 }
