@@ -28,4 +28,10 @@
         android:textSize="18sp"
         tools:text="Este es un ejemplo de una notificación para los usuarios sobre los niveles de dióxido de carbono en el aire" />
 
+    <TextView
+        android:id="@+id/item_date"
+        android:layout_width="103dp"
+        android:layout_height="wrap_content"
+        tools:text="23/08/2020" />
+
 </LinearLayout>
