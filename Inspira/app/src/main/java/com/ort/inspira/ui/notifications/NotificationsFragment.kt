@@ -1,10 +1,12 @@
 package com.ort.inspira.ui.notifications
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -19,9 +21,8 @@ import kotlinx.android.synthetic.main.fragment_notifications.*
 class NotificationsFragment : Fragment() {
 
     private lateinit var notificationsViewModel: NotificationsViewModel
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<NotificationAdapter.MyViewHolder>? = null
     private lateinit var notificationHistory: NotificationHistory
+    private var topic: String? = null
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -31,21 +32,20 @@ class NotificationsFragment : Fragment() {
         notificationsViewModel =
             ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
         notificationHistory = NotificationHistory()
+        topic = activity?.intent?.getStringExtra("topic")
         return inflater.inflate(R.layout.fragment_notifications, container, false)
     }
 
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
-        val sharedPreferences = activity?.getSharedPreferences("settings", AppCompatActivity.MODE_PRIVATE)
-        val topic = sharedPreferences?.getString("topic", "")
-        Log.d("sharedPreferences.topic", "$topic")
-        var _layoutManager = LinearLayoutManager(activity)
-        _layoutManager.orientation = LinearLayoutManager.VERTICAL
-        _layoutManager.canScrollVertically()
         recyclerView.apply {
-            layoutManager = _layoutManager
+            layoutManager = LinearLayoutManager(activity)
             notificationHistory.getNotificationHistoryByTopic(topic) {
-                adapter = NotificationAdapter(it)
+                if (it.isNotEmpty()) {
+                    adapter = NotificationAdapter(it)
+                } else {
+                    Toast.makeText(activity, "No se recuperaron las notificaciones correctamente", Toast.LENGTH_LONG)
+                }
             }
         }
     }
