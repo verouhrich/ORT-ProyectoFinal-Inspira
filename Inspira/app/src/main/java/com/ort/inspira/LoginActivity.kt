@@ -68,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onAuthFailure() {
-        Toast.makeText(this, "El usuario no tiene configurado un rol", Toast.LENGTH_LONG)
+        Toast.makeText(this, "El usuario no tiene configurado un rol", Toast.LENGTH_LONG).show()
         spinnerAndButton(spinner = false, button = true)
     }
 

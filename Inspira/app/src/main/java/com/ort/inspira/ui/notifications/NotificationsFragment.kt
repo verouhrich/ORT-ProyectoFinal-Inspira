@@ -44,7 +44,7 @@ class NotificationsFragment : Fragment() {
                 if (it.isNotEmpty()) {
                     adapter = NotificationAdapter(it)
                 } else {
-                    Toast.makeText(activity, "No se recuperaron las notificaciones correctamente", Toast.LENGTH_LONG)
+                    Toast.makeText(activity, "No se recuperaron las notificaciones correctamente", Toast.LENGTH_LONG).show()
                 }
             }
         }
