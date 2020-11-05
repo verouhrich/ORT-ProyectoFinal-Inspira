@@ -28,11 +28,10 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_home, R.id.navigation_tips, R.id.navigation_notifications))
+                R.id.navigation_home, R.id.navigation_notifications, R.id.navigation_perfil))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
-
 
     override fun onBackPressed() {}
 }

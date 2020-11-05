@@ -1,15 +1,14 @@
-package com.ort.inspira
+package com.ort.inspira.ui.notifications
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
+import com.ort.inspira.R
 import kotlinx.android.synthetic.main.notification_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 class NotificationAdapter(private val notifications: List<Notification>) : RecyclerView.Adapter<NotificationAdapter.MyViewHolder>(){
 

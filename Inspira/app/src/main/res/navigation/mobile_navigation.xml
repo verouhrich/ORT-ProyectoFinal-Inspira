@@ -3,19 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_notifications">
+    app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.ort.inspira.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/navigation_tips"
-        android:name="com.ort.inspira.ui.Tips.TipsFragment"
-        android:label="Tips"
-        tools:layout="@layout/fragment_tips" />
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -25,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_perfil"
-        android:name="com.ort.inspira.ui.perfil.TipsFragment"
+        android:name="com.ort.inspira.ui.perfil.PerfilFragment"
         android:label="Perfil"
         tools:layout="@layout/fragment_perfil" />
 </navigation>
