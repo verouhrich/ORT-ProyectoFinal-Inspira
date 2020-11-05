@@ -76,18 +76,15 @@ class FirebaseServices {
     }
 
     fun getNotificationHistoryByTopic(topic: String, returnData: (List<Notification>) -> Unit) {
-        firebaseFirestore.collection("History").whereEqualTo("topic", topic)
+        historyRef.whereEqualTo("topic", topic)
             .limit(1)
             .get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val emptyList = task.result!!.documents.isEmpty()
-                    if (emptyList) returnData(emptyList())
-                    else {
-                        val notifications: List<Notification> = task.result!!.documents[0].toObject(
-                            HistoryDocument::class.java
-                        )!!.notifications
-                        returnData(notifications)
-                    }
+                if (task.isSuccessful && task.result!!.documents.isNotEmpty()) {
+                    val notifications: List<Notification> = task.result!!
+                        .documents[0].toObject(HistoryDocument::class.java)!!.notifications
+                    returnData(notifications)
+                } else {
+                    returnData(emptyList())
                 }
             }
     }

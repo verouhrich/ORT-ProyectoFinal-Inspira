@@ -42,8 +42,8 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        firebaseServices.cacheSignIn()?.let {
-            onAuthSuccess(it)
+        firebaseServices.cacheSignIn()?.let { firebaseUser ->
+            onAuthSuccess(firebaseUser)
         }
     }
 
@@ -82,7 +82,6 @@ class LoginActivity : AppCompatActivity() {
     private fun onAuthSuccess(user: FirebaseUser) {
         firebaseServices.getTopic(user){ topic ->
             if (topic.isNullOrEmpty()) {
-                Log.d("onAuthSuccess", "missingTopic?")
                 onMissingTopic()
                 return@getTopic
             }
@@ -100,7 +99,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun onMissingTopic() {
         showLongToast(getString(R.string.on_missing_topic))
-        Log.d("onMissingTopic", "entre a onMissingTopic")
         hideProgressBar()
     }
 

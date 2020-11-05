@@ -27,15 +27,10 @@ class NotificationService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         val title = remoteMessage.notification?.title
-        Log.d("remoteMessage.title", "$title")
         val body = remoteMessage.notification?.body
-        Log.d("remoteMessage.body", "$body")
         val imageUrl = remoteMessage.notification?.imageUrl?.toString()
-        Log.d("remoteMessage.imageUrl", "$imageUrl")
         val image = getBitmapFromURL(imageUrl)
-        Log.d("remoteMessage.image", "$image")
         val color = remoteMessage.notification?.color
-        Log.d("remoteMessage.color", "$color")
         triggerNotification(title, body, image, color)
     }
 
