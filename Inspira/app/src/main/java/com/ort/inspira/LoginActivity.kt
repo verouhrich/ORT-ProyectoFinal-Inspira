@@ -126,4 +126,5 @@ class LoginActivity : AppCompatActivity() {
     private fun hideProgressBar() {
         progressBar.visibility = View.GONE
     }
+
 }

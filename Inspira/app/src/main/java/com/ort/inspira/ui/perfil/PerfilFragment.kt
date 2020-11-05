@@ -42,6 +42,7 @@ class PerfilFragment : Fragment() {
 
     private fun signOut() {
         firebaseServices.signOut()
+        activity?.finishAffinity()
         val intent = Intent(context, LoginActivity::class.java)
         startActivity(intent)
     }
