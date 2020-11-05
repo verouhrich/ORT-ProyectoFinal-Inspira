@@ -1,4 +1,4 @@
-package com.ort.inspira
+package com.ort.inspira.ui.notifications
 
 class HistoryDocument {
     var notifications: List<Notification> = emptyList()

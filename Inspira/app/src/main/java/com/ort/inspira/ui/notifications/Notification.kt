@@ -1,4 +1,4 @@
-package com.ort.inspira
+package com.ort.inspira.ui.notifications
 
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
