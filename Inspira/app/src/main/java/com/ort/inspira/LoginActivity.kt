@@ -1,7 +1,6 @@
 package com.ort.inspira
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -10,14 +9,16 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import com.google.android.gms.tasks.Task
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.internal.ThreadSafeHeapNode
 import java.io.IOException
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmail: EditText
@@ -42,21 +43,32 @@ class LoginActivity : AppCompatActivity() {
         usersRef = firestore.collection("Users")
         firebaseMessaging = FirebaseMessaging.getInstance()
         firebaseInstaceId = FirebaseInstanceId.getInstance()
-
-        loginButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                login()
-            }
-        })
+        loginButton.setOnClickListener { login() }
     }
 
     override fun onStart() {
         super.onStart()
         spinnerAndButton(spinner = true, button = false)
-        if(auth.currentUser != null) {
-            getDataUser(auth.currentUser!!.uid)
-            action()
+        auth.currentUser?.let {
+            onAuthSuccess(it)
         }
+        spinnerAndButton(spinner = false, button = true)
+    }
+
+    private fun onAuthSuccess(user: FirebaseUser) {
+        getDataUser(user) { topics ->
+            if (topics.isEmpty()) {
+                onAuthFailure()
+                return@getDataUser
+            }
+            removeOldTopics()
+            subscribeToTopics(topics)
+            action(topics)
+        }
+    }
+
+    private fun onAuthFailure() {
+        Toast.makeText(this, "El usuario no tiene configurado un rol", Toast.LENGTH_LONG).show()
         spinnerAndButton(spinner = false, button = true)
     }
 
@@ -72,38 +84,42 @@ class LoginActivity : AppCompatActivity() {
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
             spinnerAndButton(spinner = true, button = false)
             auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this){
-                        task ->
+                .addOnCompleteListener(this){ task ->
                     if (task.isSuccessful){
                         try {
-                            val userAuth = auth.currentUser
-                            Log.d("Usuario uid: ", userAuth!!.uid)
-                            getDataUser(userAuth.uid)
-                            action()
+                            onAuthSuccess(auth.currentUser!!)
                         } catch (error: Exception) {
                             spinnerAndButton(spinner = false, button = true)
-                            Toast.makeText(this, "Ocurrio un error, intente mas tarde", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this,
+                                "Ocurrio un error, intente mas tarde",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     } else {
                         spinnerAndButton(spinner = false, button = true)
                         loginPassword.text.clear()
-                        Toast.makeText(this, "Error en la autenticacion. Verifique que los datos ingresados sean correctos", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            "Error en la autenticacion. Verifique que los datos ingresados sean correctos",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
         }
     }
 
-    private fun getDataUser(uid: String) {
-        if (uid.isNullOrEmpty()) return
-        val userRef = usersRef.document(uid)
+    private fun getDataUser(user: FirebaseUser, myCallback: (List<String>) -> Unit) {
+        if (user.uid.isNullOrEmpty()) return
+        val userRef = usersRef.document(user.uid)
         userRef.get().addOnSuccessListener { document ->
-            if (document != null) {
+            if (document.get("topics") != null) {
                 val topics = document.get("topics") as ArrayList<String>
+                myCallback(topics)
                 Log.d("data", "DocumentSnapshot data: $topics")
-                removeOldTopics()
-                subscribeToTopics(topics)
             } else {
                 Log.d("no document", "No such document")
+                myCallback(emptyList())
             }
         }
     }
@@ -119,8 +135,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun subscribeToTopics(topics: ArrayList<String>) {
-        topics.forEach {topic ->
+    private fun subscribeToTopics(topics: List<String>) {
+        topics.forEach { topic ->
             if (topic is String) {
                 firebaseMessaging.subscribeToTopic(topic)
                     .addOnCompleteListener  { task ->
@@ -134,9 +150,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun action(){
+    private fun action(topics: List<String>){
         spinnerAndButton(spinner = false, button = false)
         val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("topic", topics[0])
         startActivity(intent)
     }
 }
