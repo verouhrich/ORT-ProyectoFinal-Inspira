@@ -41,10 +41,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun isInternetReachable() {
-        Application.NETWORK_STATS_SERVICE
-    }
-
     private fun blockInputs() {
         loginEmail.visibility = View.GONE
         loginPassword.visibility = View.GONE
