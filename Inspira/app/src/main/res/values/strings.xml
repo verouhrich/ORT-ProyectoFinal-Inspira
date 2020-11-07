@@ -14,4 +14,7 @@
     <string name="visionTitle">Titulo de la Vision</string>
     <string name="visionDescription">Descripcion de la vision</string>
     <string name="missionTitle">Titulo de la Mision</string>
+    <string name="emailHint">Email</string>
+    <string name="passwordHint">Contraseña</string>
+    <string name="notificationsError">Ocurrio un error al recuperar las notificaciones</string>
 </resources>
