@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.notification_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NotificationAdapter(private val notifications: List<Notification>) : RecyclerView.Adapter<NotificationAdapter.MyViewHolder>(){
+class NotificationAdapter(private val notifications: List<Notification>?) : RecyclerView.Adapter<NotificationAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.notification_item, parent, false)
@@ -18,22 +18,27 @@ class NotificationAdapter(private val notifications: List<Notification>) : Recyc
     }
 
     override fun getItemCount(): Int {
-        return notifications.size
+        var itemCount = 0
+        if (notifications != null) {
+            itemCount = notifications.size
+        }
+        return itemCount
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val notification = notifications[position]
+        val notification: Notification? = notifications?.get(position)
         holder.setData(notification)
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun setData(notification: Notification){
-            itemView.item_title.text = notification.title
-            itemView.item_body.text = notification.body
-            itemView.item_date.text = getDateTime(notification.date)
+        fun setData(notification: Notification?){
+            itemView.item_title.text = notification?.title
+            itemView.item_body.text = notification?.body
+            itemView.item_date.text = getDateTime(notification?.date)
         }
 
-        private fun getDateTime(stamp: Timestamp): String {
+        private fun getDateTime(stamp: Timestamp?): String {
+            if (stamp == null) return ""
             return try {
                 val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm")
                 val netDate = Date(stamp.seconds * 1000)
@@ -42,8 +47,5 @@ class NotificationAdapter(private val notifications: List<Notification>) : Recyc
                 e.toString()
             }
         }
-
-
-
     }
 }

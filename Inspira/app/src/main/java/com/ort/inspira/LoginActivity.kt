@@ -1,5 +1,6 @@
 package com.ort.inspira
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -10,17 +11,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import org.w3c.dom.Text
-import java.io.IOException
-
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmail: EditText
@@ -41,22 +32,41 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onStart() {
-        super.onStart()
-        firebaseServices.cacheSignIn()?.let { firebaseUser ->
-            onAuthSuccess(firebaseUser)
+        runOnUiThread{
+            blockInputs()
+            super.onStart()
+            val firebaseUser: FirebaseUser? = firebaseServices.cacheSignIn()
+            if (firebaseUser != null) onAuthSuccess(firebaseUser)
+            else releaseInputs()
         }
     }
 
-    private fun signIn() {
+    private fun blockInputs() {
+        loginEmail.visibility = View.GONE
+        loginPassword.visibility = View.GONE
+        loginButton.visibility = View.GONE
         showProgressBar()
-        if (!validateForm()) {
-            return
-        }
-        val email: String = loginEmail.text.toString()
-        val password: String = loginPassword.text.toString()
-        firebaseServices.signIn(email, password){ firebaseUser ->
-            if (firebaseUser != null) onAuthSuccess(firebaseUser)
-            else onAuthFailure()
+    }
+
+    private fun releaseInputs() {
+        loginEmail.visibility = View.VISIBLE
+        loginPassword.visibility = View.VISIBLE
+        loginButton.visibility = View.VISIBLE
+        hideProgressBar()
+    }
+
+    private fun signIn() {
+        runOnUiThread{
+            if (!validateForm()) {
+                return@runOnUiThread
+            }
+            showProgressBar()
+            val email: String = loginEmail.text.toString()
+            val password: String = loginPassword.text.toString()
+            firebaseServices.signIn(email, password){ firebaseUser ->
+                if (firebaseUser != null) onAuthSuccess(firebaseUser)
+                else onAuthFailure()
+            }
         }
     }
 
@@ -99,11 +109,13 @@ class LoginActivity : AppCompatActivity() {
 
     private fun onMissingTopic() {
         showLongToast(getString(R.string.on_missing_topic))
+        firebaseServices.signOut()
         hideProgressBar()
     }
 
     private fun onSubscriptionFailure() {
         showLongToast(getString(R.string.on_subscription_failure))
+        firebaseServices.signOut()
         hideProgressBar()
     }
 
@@ -117,6 +129,7 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("topic", topic)
         startActivity(intent)
+        hideProgressBar()
     }
 
     private fun showProgressBar() {

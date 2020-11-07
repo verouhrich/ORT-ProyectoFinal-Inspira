@@ -7,13 +7,13 @@ import androidx.lifecycle.ViewModel
 class HomeViewModel : ViewModel() {
 
     private val _missionTitle = MutableLiveData<String>().apply {
-        value = "Mision"
+        value = "Misión"
     }
     val missionTitle: LiveData<String> = _missionTitle
 
 
     private val _visionTitle = MutableLiveData<String>().apply {
-        value = "Vision"
+        value = "Visión"
     }
     val visionTitle: LiveData<String> = _visionTitle
 

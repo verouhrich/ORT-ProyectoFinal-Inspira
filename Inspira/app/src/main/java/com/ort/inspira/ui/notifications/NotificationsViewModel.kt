@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 
 class NotificationsViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+    private val _emptyList = MutableLiveData<String>().apply {
+        value = "No hay notificaciones para mostrar"
     }
-    val text: LiveData<String> = _text
+    val emptyList: LiveData<String> = _emptyList
 }
