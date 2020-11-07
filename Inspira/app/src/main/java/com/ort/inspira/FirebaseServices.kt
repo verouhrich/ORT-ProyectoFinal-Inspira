@@ -49,10 +49,10 @@ class FirebaseServices {
     }
 
     fun getTopic(user: FirebaseUser, returnData: (String?) -> Unit) {
-        usersRef.document(user!!.uid).get().addOnCompleteListener { task ->
+        usersRef.document(user.uid).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                if (task.result!!.exists() && task.result?.get("topic") != null) {
-                    val topic: String? = task.result?.get("topic") as String?
+                if (task.result!!.exists() && task.result!!.get("topic") != null) {
+                    val topic: String? = task.result!!.get("topic") as String?
                     returnData(topic)
                 } else {
                     returnData(null)
@@ -78,7 +78,7 @@ class FirebaseServices {
     }
 
     fun getNotificationHistoryByTopic(topic: String?, returnData: (List<Notification>?) -> Unit) {
-        if (topic.isNullOrEmpty()) returnData(emptyList())
+        if (topic.isNullOrEmpty()) returnData(null)
         historyRef.whereEqualTo("topic", topic)
             .limit(1)
             .get().addOnCompleteListener { task ->
