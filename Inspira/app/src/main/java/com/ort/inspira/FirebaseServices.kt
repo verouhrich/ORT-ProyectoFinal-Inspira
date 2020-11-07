@@ -40,7 +40,7 @@ class FirebaseServices {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val firebaseUser: FirebaseUser? = task.result?.user
+                    val firebaseUser: FirebaseUser? = task.result!!.user
                     returnData(firebaseUser)
                 } else {
                     returnData(null)
