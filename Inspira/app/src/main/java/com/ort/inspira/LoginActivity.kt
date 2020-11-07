@@ -1,5 +1,6 @@
 package com.ort.inspira
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -40,6 +41,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun isInternetReachable() {
+        Application.NETWORK_STATS_SERVICE
+    }
+
     private fun blockInputs() {
         loginEmail.visibility = View.GONE
         loginPassword.visibility = View.GONE
@@ -58,7 +63,6 @@ class LoginActivity : AppCompatActivity() {
         runOnUiThread{
             if (!validateForm()) {
                 return@runOnUiThread
-                hideProgressBar()
             }
             showProgressBar()
             val email: String = loginEmail.text.toString()
@@ -90,17 +94,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onAuthSuccess(user: FirebaseUser) {
-        runOnUiThread{
-            firebaseServices.getTopic(user){ topic ->
-                if (topic.isNullOrEmpty()) {
-                    onMissingTopic()
-                    return@getTopic
-                }
-                firebaseServices.removeOldTopic()
-                firebaseServices.subscribeToTopic(topic){ success ->
-                    if (!success) onSubscriptionFailure()
-                    else onSubscriptionSuccess(topic)
-                }
+        firebaseServices.getTopic(user){ topic ->
+            if (topic.isNullOrEmpty()) {
+                onMissingTopic()
+                return@getTopic
+            }
+            firebaseServices.removeOldTopic()
+            firebaseServices.subscribeToTopic(topic){ success ->
+                if (!success) onSubscriptionFailure()
+                else onSubscriptionSuccess(topic)
             }
         }
     }

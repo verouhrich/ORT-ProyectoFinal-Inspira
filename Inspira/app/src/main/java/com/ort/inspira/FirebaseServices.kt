@@ -38,14 +38,14 @@ class FirebaseServices {
 
     fun signIn(email: String, password: String, returnData: (user: FirebaseUser?) -> Unit) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val firebaseUser: FirebaseUser? = task.result!!.user
-                    returnData(firebaseUser)
-                } else {
-                    returnData(null)
-                }
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val firebaseUser: FirebaseUser? = task.result!!.user
+                returnData(firebaseUser)
+            } else {
+                returnData(null)
             }
+        }
     }
 
     fun getTopic(user: FirebaseUser, returnData: (String?) -> Unit) {
