@@ -12,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
+import com.rbddevs.splashy.Splashy
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmail: EditText
@@ -23,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        showSplashScreen()
         loginEmail = findViewById(R.id.loginEmail)
         loginPassword = findViewById(R.id.loginPassword)
         loginButton = findViewById(R.id.loginButton)
@@ -32,27 +34,25 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onStart() {
-        runOnUiThread{
-            blockInputs()
-            super.onStart()
-            val firebaseUser: FirebaseUser? = firebaseServices.cacheSignIn()
-            if (firebaseUser != null) onAuthSuccess(firebaseUser)
-            else releaseInputs()
+        super.onStart()
+        val firebaseUser: FirebaseUser? = firebaseServices.cacheSignIn()
+        if (firebaseUser != null) onAuthSuccess(firebaseUser)
+    }
+
+    private fun showSplashScreen() {
+        val splashScreen: Splashy = Splashy(this)
+            .setLogo(R.mipmap.fiware)
+            .setTitle("Inspira")
+            .showProgress(true)
+            .setFullScreen(true)
+            .setDuration(3000)
+        if (intent.getBooleanExtra("splashScreen", true)){
+            splashScreen.show()
         }
     }
 
-    private fun blockInputs() {
-        loginEmail.visibility = View.GONE
-        loginPassword.visibility = View.GONE
-        loginButton.visibility = View.GONE
-        showProgressBar()
-    }
-
-    private fun releaseInputs() {
-        loginEmail.visibility = View.VISIBLE
-        loginPassword.visibility = View.VISIBLE
-        loginButton.visibility = View.VISIBLE
-        hideProgressBar()
+    override fun onBackPressed() {
+        finish()
     }
 
     private fun signIn() {
