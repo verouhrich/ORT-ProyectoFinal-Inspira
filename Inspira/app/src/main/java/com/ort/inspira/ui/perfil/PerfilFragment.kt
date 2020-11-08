@@ -15,6 +15,7 @@ import com.ort.inspira.FirebaseServices
 import com.ort.inspira.LoginActivity
 import com.ort.inspira.MainActivity
 import com.ort.inspira.R
+import com.rbddevs.splashy.Splashy
 
 class PerfilFragment : Fragment() {
 
@@ -44,6 +45,7 @@ class PerfilFragment : Fragment() {
         firebaseServices.signOut()
         activity?.finishAffinity()
         val intent = Intent(context, LoginActivity::class.java)
+        intent.putExtra("splashScreen", false)
         startActivity(intent)
     }
 }
