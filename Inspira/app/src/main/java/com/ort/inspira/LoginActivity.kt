@@ -12,7 +12,11 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
+import com.ort.inspira.ui.notifications.User
 import com.rbddevs.splashy.Splashy
+import kotlinx.coroutines.delay
+import java.io.IOException
+import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmail: EditText
@@ -45,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
             .setTitle("Inspira")
             .showProgress(true)
             .setFullScreen(true)
-            .setDuration(3000)
+            .setDuration(4000)
         if (intent.getBooleanExtra("splashScreen", true)){
             splashScreen.show()
         }
@@ -63,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
             showProgressBar()
             val email: String = loginEmail.text.toString()
             val password: String = loginPassword.text.toString()
-            firebaseServices.signIn(email, password){ firebaseUser ->
+            firebaseServices.signIn(email, password) { firebaseUser ->
                 if (firebaseUser != null) onAuthSuccess(firebaseUser)
                 else onAuthFailure()
             }
@@ -89,16 +93,20 @@ class LoginActivity : AppCompatActivity() {
         return result
     }
 
-    private fun onAuthSuccess(user: FirebaseUser) {
-        firebaseServices.getTopic(user){ topic ->
-            if (topic.isNullOrEmpty()) {
-                onMissingTopic()
-                return@getTopic
-            }
-            firebaseServices.removeOldTopic()
-            firebaseServices.subscribeToTopic(topic){ success ->
-                if (!success) onSubscriptionFailure()
-                else onSubscriptionSuccess(topic)
+    private fun onAuthSuccess(firebaseUser: FirebaseUser) {
+        runOnUiThread{
+            firebaseServices.getUser(firebaseUser) getTopic@{ user ->
+                if (user != null){
+                    if (user.topic.isNullOrEmpty()) {
+                        onMissingTopic()
+                        return@getTopic
+                    }
+                    firebaseServices.removeOldTopic()
+                    firebaseServices.subscribeToTopic(user.topic){ success ->
+                        if (!success) onSubscriptionFailure()
+                        else onSubscriptionSuccess(user)
+                    }
+                }
             }
         }
     }
@@ -125,10 +133,17 @@ class LoginActivity : AppCompatActivity() {
         hideProgressBar()
     }
 
-    private fun onSubscriptionSuccess(topic: String) {
+    private fun onSubscriptionSuccess(user: User) {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("topic", topic)
+        intent.putExtra("topicDescription", user.topicDescription)
+        intent.putExtra("topic", user.topic)
         startActivity(intent)
+        hideProgressBar()
+    }
+
+    private fun onRemoveTopicFailure() {
+        showLongToast("Ocurrio un error al conectarse con Inspira, intente mas tarde")
+        firebaseServices.signOut()
         hideProgressBar()
     }
 
