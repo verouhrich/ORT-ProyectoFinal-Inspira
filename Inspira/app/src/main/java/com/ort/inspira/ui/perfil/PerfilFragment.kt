@@ -33,7 +33,7 @@ class PerfilFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_perfil, container, false)
         val textView: TextView = root.findViewById(R.id.text_tips)
         perfilViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = "$it ${activity?.intent?.getStringExtra("topic")}"
+            textView.text = "$it ${activity?.intent?.getStringExtra("topicDescription")}"
         })
         val logoutButton: Button = root.findViewById(R.id.logoutButton)
         firebaseServices = FirebaseServices()

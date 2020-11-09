@@ -41,7 +41,7 @@ class NotificationsFragment : Fragment() {
         super.onViewCreated(itemView, savedInstanceState)
         val recyclerView: RecyclerView? = view?.findViewById(R.id.recyclerView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        firebaseServices.getNotificationHistoryByTopic(topic) { notifications ->
+        firebaseServices.getNotifications(topic) { notifications ->
             if (notifications != null) {
                 if (notifications.isNotEmpty()) {
                     recyclerView?.adapter = NotificationAdapter(notifications)
