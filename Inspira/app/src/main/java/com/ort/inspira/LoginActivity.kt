@@ -141,12 +141,6 @@ class LoginActivity : AppCompatActivity() {
         hideProgressBar()
     }
 
-    private fun onRemoveTopicFailure() {
-        showLongToast("Ocurrio un error al conectarse con Inspira, intente mas tarde")
-        firebaseServices.signOut()
-        hideProgressBar()
-    }
-
     private fun showProgressBar() {
         progressBar.visibility = View.VISIBLE
     }
