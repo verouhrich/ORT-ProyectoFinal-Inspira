@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_tips"
-        android:name="com.ort.inspira.ui.Tips.TipsFragment"
-        android:label="Tips"
-        tools:layout="@layout/fragment_tips" />
-
-    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.ort.inspira.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
@@ -25,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_perfil"
-        android:name="com.ort.inspira.ui.perfil.TipsFragment"
+        android:name="com.ort.inspira.ui.perfil.PerfilFragment"
         android:label="Perfil"
         tools:layout="@layout/fragment_perfil" />
 </navigation>

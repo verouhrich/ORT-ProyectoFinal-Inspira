@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class PerfilViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is the Perfil Fragment"
+        value = "Perfil: "
     }
     val text: LiveData<String> = _text
 }
