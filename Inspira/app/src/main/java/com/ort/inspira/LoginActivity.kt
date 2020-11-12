@@ -96,16 +96,14 @@ class LoginActivity : AppCompatActivity() {
     private fun onAuthSuccess(firebaseUser: FirebaseUser) {
         runOnUiThread{
             firebaseServices.getUser(firebaseUser) getTopic@{ user ->
-                if (user != null){
-                    if (user.topic.isNullOrEmpty()) {
-                        onMissingTopic()
-                        return@getTopic
-                    }
+                if (user != null && !user.topic.isNullOrEmpty()){
                     firebaseServices.removeOldTopic()
                     firebaseServices.subscribeToTopic(user.topic){ success ->
                         if (!success) onSubscriptionFailure()
                         else onSubscriptionSuccess(user)
                     }
+                } else {
+                    onMissingTopic()
                 }
             }
         }
