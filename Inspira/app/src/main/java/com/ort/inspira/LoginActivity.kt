@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -13,10 +12,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
 import com.ort.inspira.ui.notifications.User
-import com.rbddevs.splashy.Splashy
-import kotlinx.coroutines.delay
-import java.io.IOException
-import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginEmail: EditText
@@ -28,7 +23,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        showSplashScreen()
         loginEmail = findViewById(R.id.loginEmail)
         loginPassword = findViewById(R.id.loginPassword)
         loginButton = findViewById(R.id.loginButton)
@@ -41,18 +35,6 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
         val firebaseUser: FirebaseUser? = firebaseServices.cacheSignIn()
         if (firebaseUser != null) onAuthSuccess(firebaseUser)
-    }
-
-    private fun showSplashScreen() {
-        val splashScreen: Splashy = Splashy(this)
-            .setLogo(R.mipmap.fiware)
-            .setTitle("Inspira")
-            .showProgress(true)
-            .setFullScreen(true)
-            .setDuration(4000)
-        if (intent.getBooleanExtra("splashScreen", true)){
-            splashScreen.show()
-        }
     }
 
     override fun onBackPressed() {
@@ -140,11 +122,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showProgressBar() {
-        progressBar.visibility = View.VISIBLE
+        progressBar?.visibility = View.VISIBLE
     }
 
     private fun hideProgressBar() {
-        progressBar.visibility = View.GONE
+        progressBar?.visibility = View.GONE
     }
 
 }
