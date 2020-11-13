@@ -13,12 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
 import com.ort.inspira.ui.notifications.User
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var loginEmail: EditText
-    private lateinit var loginPassword: EditText
-    private lateinit var progressBar: ProgressBar
+class LoginActivity : BaseActivity() {
+
     private lateinit var loginButton: Button
-    private lateinit var firebaseServices: FirebaseServices
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +28,6 @@ class LoginActivity : AppCompatActivity() {
         loginButton.setOnClickListener { signIn() }
     }
 
-    override fun onStart() {
-        super.onStart()
-        val firebaseUser: FirebaseUser? = firebaseServices.cacheSignIn()
-        if (firebaseUser != null) onAuthSuccess(firebaseUser)
-    }
-
     override fun onBackPressed() {
         finish()
     }
@@ -47,8 +38,8 @@ class LoginActivity : AppCompatActivity() {
                 return@runOnUiThread
             }
             showProgressBar()
-            val email: String = loginEmail.text.toString()
-            val password: String = loginPassword.text.toString()
+            val email: String = loginEmail!!.text.toString()
+            val password: String = loginPassword!!.text.toString()
             firebaseServices.signIn(email, password) { firebaseUser ->
                 if (firebaseUser != null) onAuthSuccess(firebaseUser)
                 else onAuthFailure()
@@ -58,75 +49,21 @@ class LoginActivity : AppCompatActivity() {
 
     private fun validateForm(): Boolean {
         var result = true
-        val email: String = loginEmail.text.toString()
-        val password: String = loginPassword.text.toString()
+        val email: String = loginEmail!!.text.toString()
+        val password: String = loginPassword!!.text.toString()
         if (TextUtils.isEmpty(email)){
-            loginEmail.error = "Este campo es obligatorio"
+            loginEmail!!.error = "Este campo es obligatorio"
             result = false
         }
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            loginEmail.error = "Ingresa una direccion de email valida"
+            loginEmail!!.error = "Ingresa una direccion de email valida"
             result = false
         }
         if (TextUtils.isEmpty(password)){
-            loginPassword.error = "Este campo es obligatorio"
+            loginPassword!!.error = "Este campo es obligatorio"
             result = false
         }
         return result
-    }
-
-    private fun onAuthSuccess(firebaseUser: FirebaseUser) {
-        runOnUiThread{
-            firebaseServices.getUser(firebaseUser) getTopic@{ user ->
-                if (user != null && !user.topic.isNullOrEmpty()){
-                    firebaseServices.removeOldTopic()
-                    firebaseServices.subscribeToTopic(user.topic){ success ->
-                        if (!success) onSubscriptionFailure()
-                        else onSubscriptionSuccess(user)
-                    }
-                } else {
-                    onMissingTopic()
-                }
-            }
-        }
-    }
-
-    private fun showLongToast(message: String) {
-        Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
-    }
-
-    private fun onMissingTopic() {
-        showLongToast(getString(R.string.on_missing_topic))
-        firebaseServices.signOut()
-        hideProgressBar()
-    }
-
-    private fun onSubscriptionFailure() {
-        showLongToast(getString(R.string.on_subscription_failure))
-        firebaseServices.signOut()
-        hideProgressBar()
-    }
-
-    private fun onAuthFailure() {
-        loginPassword.text.clear()
-        showLongToast(getString(R.string.on_auth_failure))
-        hideProgressBar()
-    }
-
-    private fun onSubscriptionSuccess(user: User) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("topicDescription", user.topicDescription)
-        intent.putExtra("topic", user.topic)
-        startActivity(intent)
-        hideProgressBar()
-    }
-
-    private fun showProgressBar() {
-        progressBar?.visibility = View.VISIBLE
-    }
-
-    private fun hideProgressBar() {
-        progressBar?.visibility = View.GONE
     }
 
 }
