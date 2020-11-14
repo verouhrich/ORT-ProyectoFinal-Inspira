@@ -8,7 +8,7 @@
     <string name="default_notification_channel_id">100</string>
     <string name="logout_button">Cerrar Sesion</string>
     <string name="on_auth_failure">Error en la autenticacion. Verifique que los datos ingresados sean correctos</string>
-    <string name="on_missing_topic">El usuario no tiene configurado un rol</string>
+    <string name="on_missing_topic">El usuario no tiene configurado un perfil</string>
     <string name="on_subscription_failure">Ocurrio un error al registrar la escucha de notificaciones</string>
     <string name="missionDescription">Descripcion de la Mision</string>
     <string name="visionTitle">Titulo de la Vision</string>
@@ -17,4 +17,5 @@
     <string name="emailHint">Email</string>
     <string name="passwordHint">Contraseña</string>
     <string name="notificationsError">Ocurrio un error al recuperar las notificaciones</string>
+    <string name="appName">Inspira</string>
 </resources>
