@@ -9,7 +9,8 @@
     android:paddingRight="16dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@layout/rounded_border_textview">
 
     <TextView
         android:id="@+id/item_title"

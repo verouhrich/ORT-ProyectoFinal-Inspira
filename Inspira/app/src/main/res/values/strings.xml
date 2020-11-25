@@ -17,4 +17,5 @@
     <string name="emailHint">Email</string>
     <string name="passwordHint">Contraseña</string>
     <string name="notificationsError">Ocurrio un error al recuperar las notificaciones</string>
+    <string name="appName">Inspira</string>
 </resources>

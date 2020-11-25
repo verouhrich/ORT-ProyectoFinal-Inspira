@@ -1,5 +1,6 @@
 package com.ort.inspira.ui.notifications
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,8 @@ class NotificationAdapter(private val notifications: List<Notification>?) : Recy
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun setData(notification: Notification?){
             itemView.item_title.text = notification?.title
+            itemView.item_title.setTextColor(Color.parseColor(notification?.color))
+            //itemView.item_title.setBackgroundColor(Color.parseColor(notification?.color))
             itemView.item_body.text = notification?.body
             itemView.item_date.text = getDateTime(notification?.date)
         }
