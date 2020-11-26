@@ -25,19 +25,11 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val missionTitle: TextView = root.findViewById(R.id.missionTitle)
         val missionDescription: TextView = root.findViewById(R.id.missionDescription)
-        val visionTitle: TextView = root.findViewById(R.id.visionTitle)
-        val visionDescription: TextView = root.findViewById(R.id.visionDescription)
         homeViewModel.missionTitle.observe(viewLifecycleOwner, Observer {
             missionTitle.text = it
         })
         homeViewModel.missionDescription.observe(viewLifecycleOwner, Observer {
             missionDescription.text = it
-        })
-        homeViewModel.visionTitle.observe(viewLifecycleOwner, Observer {
-            visionTitle.text = it
-        })
-        homeViewModel.visionDescription.observe(viewLifecycleOwner, Observer {
-            visionDescription.text = it
         })
         return root
     }

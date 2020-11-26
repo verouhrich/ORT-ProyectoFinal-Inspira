@@ -20,60 +20,26 @@
 
     <TextView
         android:id="@+id/missionDescription"
-        android:layout_width="331dp"
-        android:layout_height="214dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_width="336dp"
+        android:layout_height="277dp"
+        android:layout_marginBottom="150dp"
         android:text="@string/missionDescription"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/visionTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/missionTitle" />
-
-    <TextView
-        android:id="@+id/visionTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="@string/visionTitle"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/visionDescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/missionDescription" />
-
-    <TextView
-        android:id="@+id/visionDescription"
-        android:layout_width="334dp"
-        android:layout_height="197dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/visionDescription"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visionTitle"
-        app:layout_constraintVertical_bias="0.122" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/missionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="50dp"
         android:text="@string/missionTitle"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/missionDescription"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
